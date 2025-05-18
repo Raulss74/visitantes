@@ -1,0 +1,22 @@
+# Entorno
+.env
+
+# Dependencias
+/vendor/
+/node_modules/
+
+# Logs y archivos temporales
+*.log
+*.cache
+*.swp
+*~
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+
+# Configuración de IDEs
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
