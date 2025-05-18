@@ -1,0 +1,90 @@
+/* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f2f5ea; /* Fondo general gris claro */
+}
+
+/* === HEADER === */
+.site-header {
+    background-color: #600202; /* Rojo fuerte */
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.site-header h1 {
+    margin: 0;
+    font-size: 28px;
+}
+
+/* === SECCIÓN DEL FORMULARIO === */
+.formulario-seccion {
+    padding: 40px 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.formulario-container {
+    background-color: white; /* Fondo blanco para el formulario */
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 600px;
+}
+
+/* === FORMULARIO === */
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-bottom: 5px;
+    font-weight: bold;
+    margin-top: 15px;
+    color: #333;
+}
+
+input, select, button {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+    margin-bottom: 15px;
+}
+
+input[readonly], input[readonly]:hover {
+    background-color: #f9f9f9;
+    cursor: not-allowed;
+}
+
+button {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+#mensajes {
+    min-height: 25px;
+    margin-top: 15px;
+    font-weight: bold;
+}
+
+.mensaje-exito {
+    color: green;
+}
+
+.mensaje-error {
+    color: red;
+}

@@ -8,14 +8,17 @@ use Dotenv\Dotenv;
 $dotenv = Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
-$host = $_ENV['DB_HOST'];
-$dbname = $_ENV['DB_NAME'];
-$user = $_ENV['DB_USER'];
-$password = $_ENV['DB_PASS'];
-
 try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $user, $password);
+    $host = $_ENV['DB_HOST'] ?? 'localhost';
+    $dbname = $_ENV['DB_NAME'] ?? 'visitantes';
+    $user = $_ENV['DB_USER'] ?? 'root';
+    $pass = $_ENV['DB_PASS'] ?? '';
+
+    $dsn = "mysql:host=$host;dbname=$dbname;charset=utf8mb4";
+
+    $pdo = new PDO($dsn, $user, $pass);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
 } catch (PDOException $e) {
-    die("Error al conectar a la base de datos: " . $e->getMessage());
+    die("Error en la conexión a la base de datos: " . $e->getMessage());
 }

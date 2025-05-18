@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Registro de Visitantes</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- Encabezado con título -->
+    <header class="site-header">
+        <h1>Registro de Visitantes</h1>
+    </header>
+
+    <!-- Sección principal del contenido -->
+    <section class="formulario-seccion">
+        <div class="formulario-container">
+            <form id="formularioVisitante" method="POST" action="procesar.php">
+                <label for="nombre">Nombre(s):</label>
+                <input type="text" id="nombre" name="nombre" placeholder="Ej: Ricardo" required>
+
+                <label for="apellidoPaterno">Apellido paterno:</label>
+                <input type="text" id="apellidoPaterno" name="apellidoPaterno" placeholder="Ej: Alamán" required>
+
+                <label for="apellidoMaterno">Apellido materno:</label>
+                <input type="text" id="apellidoMaterno" name="apellidoMaterno" placeholder="Ej: Pérez" required>
+
+                <label for="fechaNac">Fecha de nacimiento:</label>
+                <input type="date" id="fechaNac" name="fechaNacimiento" required>
+
+                <label for="lugarNac">Lugar de nacimiento:</label>
+                <select id="lugarNac" name="lugarNacimiento" required>
+                    <option value="">Selecciona tu estado</option>
+                    <option value="AG">Aguascalientes</option>
+                    <option value="BC">Baja California</option>
+                    <option value="BS">Baja California Sur</option>
+                    <option value="CP">Campeche</option>
+                    <option value="CO">Coahuila</option>
+                    <option value="CL">Colima</option>
+                    <option value="CA">Chiapas</option>
+                    <option value="CH">Chihuahua</option>
+                    <option value="DF">Ciudad de México (Distrito Federal)</option>
+                    <option value="DU">Durango</option>
+                    <option value="GT">Guanajuato</option>
+                    <option value="GU">Guerrero</option>
+                    <option value="HG">Hidalgo</option>
+                    <option value="JL">Jalisco</option>
+                    <option value="MX">México</option>
+                    <option value="MI">Michoacán</option>
+                    <option value="MO">Morelos</option>
+                    <option value="NY">Nayarit</option>
+                    <option value="NL">Nuevo León</option>
+                    <option value="OA">Oaxaca</option>
+                    <option value="PU">Puebla</option>
+                    <option value="QT">Querétaro</option>
+                    <option value="QR">Quintana Roo</option>
+                    <option value="SL">San Luis Potosí</option>
+                    <option value="SN">Sinaloa</option>
+                    <option value="SO">Sonora</option>
+                    <option value="TB">Tabasco</option>
+                    <option value="TM">Tamaulipas</option>
+                    <option value="TL">Tlaxcala</option>
+                    <option value="VE">Veracruz</option>
+                    <option value="YU">Yucatán</option>
+                    <option value="ZC">Zacatecas</option>
+                </select>
+
+                <label for="direccion">Dirección actual:</label>
+                <input type="text" id="direccion" name="direccionActual" placeholder="Calle, número, colonia, ciudad" required>
+
+                <label for="sexo">Sexo:</label>
+                <select id="sexo" name="sexo" required>
+                    <option value="">Selecciona...</option>
+                    <option value="H">Hombre</option>
+                    <option value="M">Mujer</option>
+                </select>
+
+                <label for="correo">Correo electrónico:</label>
+                <input type="email" id="correo" name="correo" placeholder="ejemplo@dominio.com" required>
+
+                <label for="curp">CURP (autogenerada):</label>
+                <input type="text" id="curp" name="curp" readonly>
+
+                <label for="rfc">RFC (autogenerado):</label>
+                <input type="text" id="rfc" name="rfc" readonly>
+
+                <label for="fechaRegistro">Fecha y hora de registro:</label>
+                <input type="text" id="fechaRegistro" name="fechaRegistro" readonly>
+
+                <div id="mensajes"></div>
+                <button type="submit">Registrar Visitante</button>
+            </form>
+        </div>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html>
