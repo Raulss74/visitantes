@@ -3,10 +3,9 @@
 
 require_once 'config.php';
 
-// === RECEPCIÓN DE DATOS DEL FORMULARIO ===
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    // Obtener y limpiar los datos del formulario
+    // === RECEPCIÓN DE DATOS ===
     $nombre           = trim($_POST['nombre']);
     $apellidoPaterno  = trim($_POST['apellidoPaterno']);
     $apellidoMaterno  = trim($_POST['apellidoMaterno']);
@@ -17,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $correo           = trim($_POST['correo']);
     $curp             = trim($_POST['curp']);
     $rfc              = trim($_POST['rfc']);
-    $fechaRegistro    = trim($_POST['fechaRegistro']);
+    $fechaRegistroStr = trim($_POST['fechaRegistro']); // Formato DD/MM/YYYY HH:mm:ss
 
     // === VALIDACIÓN DE DATOS ===
     $errores = [];
@@ -38,16 +37,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $errores[] = "Correo electrónico inválido.";
     }
 
-    if (!preg_match("/^[A-Z]{4}[0-9]{6}[HL][A-Z]{2}[0-9]{3}[A-Z][0-9]$/", $curp)) {
+    // Validación de CURP: 16 o 18 caracteres alfanuméricos
+    if (!preg_match("/^[A-Z0-9]{16,18}$/", $curp)) {
         $errores[] = "La CURP tiene un formato inválido.";
     }
 
-    if (!preg_match("/^[A-Z]{4}[0-9]{6}[A-Z]{3}$/", $rfc)) {
+    // Validación de RFC: 12 o 13 caracteres alfanuméricos
+    if (!preg_match("/^[A-Z0-9]{12,13}$/", $rfc)) {
         $errores[] = "El RFC tiene un formato inválido.";
     }
 
-    if (!preg_match("/^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4} (?:[01]\d|2[0-3]):(?:[0-5]\d):(?:[0-5]\d)$/", $fechaRegistro)) {
-        $errores[] = "La fecha de registro no tiene el formato correcto.";
+    // Validación de fecha_registro: DD/MM/YYYY HH:mm:ss
+    if (!preg_match("/^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4} (\d{2}:\d{2}:\d{2})$/", $fechaRegistroStr)) {
+        $errores[] = "La fecha de registro no tiene el formato válido (DD/MM/YYYY HH:mm:ss)";
     }
 
     if (!empty($errores)) {
@@ -55,10 +57,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit;
     }
 
-    // === CONVERTIR FECHA_REGISTRO A DATETIME ===
-    list($fechaParte, $horaParte) = explode(' ', $fechaRegistro);
+    // === CONVERTIR FECHA A FORMATO MYSQL DATETIME ===
+    list($fechaParte, $horaParte) = explode(' ', $fechaRegistroStr);
     list($dia, $mes, $anio) = explode('/', $fechaParte);
-    $fechaRegistroMySQL = "$anio-$mes-$dia $horaParte";
+    $fechaRegistroMySQL = "$anio-$mes-$dia $horaParte"; // YYYY-MM-DD HH:mm:ss
 
     try {
         // === PREPARAR LA INSERCIÓN ===
@@ -93,11 +95,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $fechaRegistroMySQL
         ]);
 
-        // === RESPUESTA EXITOSA ===
+        // === MOSTRAR MENSAJE DE ÉXITO CON BOTONES ADICIONALES ===
         mostrarRespuesta(true, "¡Registro exitoso!", [
             "Nombre: $nombre",
             "CURP: $curp",
-            "RFC: $rfc"
+            "RFC: $rfc",
+            "Fecha y hora de registro: $fechaRegistroStr"
         ]);
 
     } catch (PDOException $e) {
@@ -105,6 +108,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
+/**
+ * Muestra una respuesta amigable al usuario
+ */
 function mostrarRespuesta($exito, $titulo, $mensajes) {
     echo "<!DOCTYPE html>
     <html lang='es'>
@@ -114,18 +120,49 @@ function mostrarRespuesta($exito, $titulo, $mensajes) {
         <style>
             body { font-family: Arial, sans-serif; padding: 40px; background-color: #f4f4f4; text-align: center; }
             h2 { color: " . ($exito ? "#27ae60" : "#e74c3c") . "; }
-            ul { list-style-type: none; padding: 0; }
+            ul { list-style-type: none; padding: 0; margin-top: 20px; display: inline-block; text-align: left; }
             li { margin: 5px 0; }
-            a { display: inline-block; margin-top: 20px; text-decoration: none; color: white; background-color: #007BFF; padding: 10px 20px; border-radius: 5px; }
-            a:hover { background-color: #0056b3; }
+            .acciones {
+                margin-top: 30px;
+            }
+            .btn {
+                display: inline-block;
+                padding: 10px 20px;
+                margin: 0 10px;
+                background-color: #007BFF;
+                color: white;
+                text-decoration: none;
+                border-radius: 5px;
+                transition: background-color 0.3s ease;
+            }
+            .btn:hover {
+                background-color: #0056b3;
+            }
+            .btn-error {
+                background-color: #e74c3c;
+            }
+            .btn-error:hover {
+                background-color: #c0392b;
+            }
         </style>
     </head>
     <body>
         <h2>$titulo</h2>
         <ul>";
+
     foreach ($mensajes as $mensaje) {
         echo "<li>$mensaje</li>";
     }
-    echo "</ul><a href='index.html'>Volver al formulario</a></body></html>";
+
+    echo "</ul><div class='acciones'>";
+    echo "<a href='index.html' class='btn'>VOLVER AL FORMULARIO</a>";
+
+    if ($exito) {
+        echo "<a href='listar.php' class='btn'>VER LISTADO DE VISITANTES</a>";
+    } else {
+        echo "<a href='index.html' class='btn btn-error'>Regresar y corregir</a>";
+    }
+
+    echo "</div></body></html>";
     exit;
 }

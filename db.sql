@@ -1,5 +1,8 @@
 -- db.sql
 
+-- Eliminar base de datos si existe (opcional)
+-- DROP DATABASE IF EXISTS visitantes;
+
 -- Crear la base de datos si no existe
 CREATE DATABASE IF NOT EXISTS visitantes 
   CHARACTER SET utf8mb4 
@@ -8,19 +11,16 @@ CREATE DATABASE IF NOT EXISTS visitantes
 -- Usar la base de datos creada
 USE visitantes;
 
--- Eliminar tabla antigua si existe (opcional)
--- DROP TABLE IF EXISTS visitante;
-
--- Crear la tabla 'visitante' con campos divididos
+-- Crear la tabla 'visitante' si no existe
 CREATE TABLE IF NOT EXISTS visitante (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
     apellido_paterno VARCHAR(100) NOT NULL,
     apellido_materno VARCHAR(100) NOT NULL,
     fecha_nacimiento DATE NOT NULL,
-    lugar_nacimiento CHAR(2) NOT NULL, -- Ej: DF, AG, GT...
+    lugar_nacimiento CHAR(2) NOT NULL,
     direccion_actual VARCHAR(255) NOT NULL,
-    sexo ENUM('H', 'M') NOT NULL, -- H = Hombre, M = Mujer
+    sexo ENUM('H', 'M') NOT NULL,
     correo_electronico VARCHAR(255) NOT NULL UNIQUE,
     curp VARCHAR(18) NOT NULL,
     rfc VARCHAR(13) NOT NULL,
